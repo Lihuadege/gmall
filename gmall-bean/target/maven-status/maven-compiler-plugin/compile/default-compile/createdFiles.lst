@@ -1,1 +1,7 @@
 com\java\bean\UserInfo.class
+com\java\bean\BaseCatalog3.class
+com\java\bean\BaseCatalog1.class
+com\java\bean\BaseAttrValue.class
+com\java\bean\UserAddress.class
+com\java\bean\BaseAttrInfo.class
+com\java\bean\BaseCatalog2.class
