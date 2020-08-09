@@ -1,6 +1,6 @@
 package com.java.gmall.user.controller;
 
-import com.java.bean.UserInfo;
+import com.java.gmall.bean.UserInfo;
 import com.java.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +17,7 @@ public class UserController {
 
     @RequestMapping("/findAll")
     @ResponseBody
-    public List<UserInfo> findAll(){
+    public List<UserInfo> findAll() {
         return userService.findAll();
     }
 }

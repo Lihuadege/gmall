@@ -1,7 +1,7 @@
 package com.java.service;
 
-import com.java.bean.UserAddress;
-import com.java.bean.UserInfo;
+import com.java.gmall.bean.UserAddress;
+import com.java.gmall.bean.UserInfo;
 
 import java.util.List;
 

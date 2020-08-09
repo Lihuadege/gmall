@@ -1,8 +1,8 @@
 package com.java.gmall.user.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
-import com.java.bean.UserAddress;
-import com.java.bean.UserInfo;
+import com.java.gmall.bean.UserAddress;
+import com.java.gmall.bean.UserInfo;
 import com.java.gmall.user.Mapper.UserAddressMapper;
 import com.java.gmall.user.Mapper.UserInfoMapper;
 import com.java.service.UserService;
