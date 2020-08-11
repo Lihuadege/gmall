@@ -1,16 +1,13 @@
 package com.java.gmall.manage.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.java.gmall.bean.SkuInfo;
-import com.java.gmall.bean.SpuImage;
-import com.java.gmall.bean.SpuInfo;
-import com.java.gmall.bean.SpuSaleAttr;
+import com.java.gmall.bean.*;
+import com.java.service.ListService;
 import com.java.service.ManageSerivce;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.apache.commons.beanutils.BeanUtils;
+import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 @RestController
@@ -18,7 +15,10 @@ import java.util.List;
 public class SpuManageController {
 
     @Reference
-    private ManageSerivce manageSerivce;
+    ManageSerivce manageSerivce;
+
+    @Reference
+    ListService listService;
 
     @RequestMapping("spuSaleAttrList")
     public List<SpuSaleAttr> getSpuSaleAttrList(String spuId) {
@@ -51,6 +51,21 @@ public class SpuManageController {
             return "ok";
         }
         return "not ok";
+    }
+
+    @RequestMapping(value = "onSale",method = RequestMethod.GET)
+    public void onSale(String skuId){
+        SkuInfo skuInfo = manageSerivce.getSkuInfo(skuId);
+        SkuLsInfo skuLsInfo = new SkuLsInfo();
+        // 属性拷贝
+        try {
+            BeanUtils.copyProperties(skuLsInfo,skuInfo);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        listService.saveSkuInfo(skuLsInfo);
     }
 
 }

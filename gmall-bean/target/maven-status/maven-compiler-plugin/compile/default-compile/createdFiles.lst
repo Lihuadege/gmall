@@ -1,3 +1,4 @@
+com\java\gmall\bean\SkuLsAttrValue.class
 com\java\gmall\bean\BaseAttrInfo.class
 com\java\gmall\bean\BaseCatalog2.class
 com\java\gmall\bean\SkuAttrValue.class
@@ -5,6 +6,8 @@ com\java\gmall\bean\UserAddress.class
 com\java\gmall\bean\BaseCatalog3.class
 com\java\gmall\bean\SpuSaleAttr.class
 com\java\gmall\bean\SkuImage.class
+com\java\gmall\bean\SkuLsParams.class
+com\java\gmall\bean\SkuLsInfo.class
 com\java\gmall\bean\SpuSaleAttrValue.class
 com\java\gmall\bean\SkuInfo.class
 com\java\gmall\bean\SpuImage.class
@@ -13,4 +16,5 @@ com\java\gmall\bean\SpuInfo.class
 com\java\gmall\bean\UserInfo.class
 com\java\gmall\bean\BaseSaleAttr.class
 com\java\gmall\bean\SkuSaleAttrValue.class
+com\java\gmall\bean\SkuLsResult.class
 com\java\gmall\bean\BaseCatalog1.class

@@ -1,13 +1,20 @@
 package com.java.gmall.manage.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.alibaba.fastjson.JSON;
 import com.java.gmall.bean.*;
+import com.java.gmall.config.RedisUtil;
+import com.java.gmall.manage.constant.ManageConst;
 import com.java.gmall.manage.mapper.*;
 import com.java.gmall.manage.mapper.SkuAttrValueMapper;
 import com.java.service.ManageSerivce;
+import jdk.nashorn.internal.runtime.ECMAException;
+import net.minidev.json.JSONUtil;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import redis.clients.jedis.Jedis;
+import redis.clients.util.JedisURIHelper;
 
 import java.util.List;
 
@@ -56,6 +63,9 @@ public class ManageSeriveImpl implements ManageSerivce {
     @Autowired
     private SkuImageMapper skuImageMapper;
 
+    @Autowired
+    private RedisUtil redisUtil;
+
     @Override
     public List<SkuSaleAttrValue> getSkuSaleAttrValueListBySpu(String spuId) {
         return skuSaleAttrValueMapper.selectSkuSaleAttrValueListBySpu(spuId);
@@ -66,14 +76,45 @@ public class ManageSeriveImpl implements ManageSerivce {
         return spuSaleAttrMapper.selectSpuSaleAttrListCheckBySku(skuInfo.getId(),skuInfo.getSpuId());
     }
 
+    /**
+     * 利用Redis进行缓存sku热点数据，当Redis不存在该数据，从数据库中查询
+     * @param skuId
+     * @return SkuInfo
+     */
     @Override
     public SkuInfo getSkuInfo(String skuId) {
+        Jedis jedis = redisUtil.getJedis();
+        String skuInfoKey = ManageConst.SKUKEY_PREFIX+skuId+ManageConst.SKUKEY_SUFFIX;
+        SkuInfo skuInfo=null;
+        try{
+            if(jedis.exists(skuInfoKey)){
+                String skuJson = jedis.get(skuInfoKey);
+                if (skuJson!=null && skuJson.length()!=0){
+                    skuInfo = JSON.parseObject(skuJson, SkuInfo.class);
+                }
+            }else {
+                skuInfo = getSkuInfoDb(skuId);
+                String jsonString = JSON.toJSONString(skuInfo);
+                jedis.setex(skuInfoKey,ManageConst.SKUKEY_TIMEOUT,jsonString);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally{
+            if(jedis!=null)jedis.close();
+        }
+        return skuInfo;
+    }
+
+    private SkuInfo getSkuInfoDb(String skuId) {
         SkuInfo skuInfo = skuInfoMapper.selectByPrimaryKey(skuId);
         SkuImage skuImage = new SkuImage();
         skuImage.setSkuId(skuInfo.getId());
         List<SkuImage> skuImages = skuImageMapper.select(skuImage);
         skuInfo.setSkuImageList(skuImages);
-
+        SkuAttrValue skuAttrValue = new SkuAttrValue();
+        skuAttrValue.setSkuId(skuId);
+        List<SkuAttrValue> skuAttrValues = skuAttrValueMapper.select(skuAttrValue);
+        skuInfo.setSkuAttrValueList(skuAttrValues);
         return skuInfo;
     }
 

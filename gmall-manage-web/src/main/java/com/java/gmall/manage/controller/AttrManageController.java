@@ -2,9 +2,12 @@ package com.java.gmall.manage.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.java.gmall.bean.*;
+import com.java.service.ListService;
 import com.java.service.ManageSerivce;
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 @RestController
