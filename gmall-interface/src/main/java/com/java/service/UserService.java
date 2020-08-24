@@ -11,4 +11,7 @@ public interface UserService {
 
     List<UserAddress> findAddByUserId(String userId);
 
+    UserInfo login(UserInfo userInfo);
+
+    UserInfo verify(String userId);
 }

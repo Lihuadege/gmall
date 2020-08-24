@@ -17,4 +17,5 @@ com\java\gmall\bean\UserInfo.class
 com\java\gmall\bean\BaseSaleAttr.class
 com\java\gmall\bean\SkuSaleAttrValue.class
 com\java\gmall\bean\SkuLsResult.class
+com\java\gmall\bean\CartInfo.class
 com\java\gmall\bean\BaseCatalog1.class

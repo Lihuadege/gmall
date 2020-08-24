@@ -6,15 +6,12 @@ import com.java.gmall.bean.*;
 import com.java.gmall.config.RedisUtil;
 import com.java.gmall.manage.constant.ManageConst;
 import com.java.gmall.manage.mapper.*;
-import com.java.gmall.manage.mapper.SkuAttrValueMapper;
 import com.java.service.ManageSerivce;
-import jdk.nashorn.internal.runtime.ECMAException;
-import net.minidev.json.JSONUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import redis.clients.jedis.Jedis;
-import redis.clients.util.JedisURIHelper;
 
 import java.util.List;
 
@@ -65,6 +62,14 @@ public class ManageSeriveImpl implements ManageSerivce {
 
     @Autowired
     private RedisUtil redisUtil;
+
+    @Override
+    public List<BaseAttrInfo> getAttrList(List<String> attrValueIdList) {
+        String attrValueIds = StringUtils.join(attrValueIdList.toArray(), ",");
+        List<BaseAttrInfo> baseAttrInfoList = baseAttrInfoMapper.selectAttrInfoListByIds(attrValueIds);
+        return baseAttrInfoList;
+
+    }
 
     @Override
     public List<SkuSaleAttrValue> getSkuSaleAttrValueListBySpu(String spuId) {
